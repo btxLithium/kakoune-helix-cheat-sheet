@@ -1,235 +1,148 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vim 快捷键示意图</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5; /* 页面背景色 */
-        }
-        .keyboard-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px; /* 行间距 */
-            padding: 20px;
-            background-color: #d1d5db; /* 键盘区域背景色 */
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .key-row {
-            display: flex;
-            gap: 6px; /* 按键间距 */
-            justify-content: center;
-        }
-        .key {
-            background-color: #ffffff; /* 默认按键背景色 */
-            border: 1px solid #b0b0b0;
-            border-radius: 6px;
-            padding: 8px;
-            min-width: 60px; /* 按键最小宽度 */
-            min-height: 70px; /* 按键最小高度 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between; /* 内容垂直分布 */
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.2s ease-in-out;
-        }
-        .key:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        .key-char {
-            font-size: 1.25em; /* 1.25em = 20px if base is 16px */
-            font-weight: bold;
-            color: #333;
-        }
-        .vim-cmd {
-            font-size: 0.75em; /* 0.75em = 12px */
-            font-weight: 500;
-        }
-        .vim-desc {
-            font-size: 0.65em; /* 0.65em = 10.4px */
-            color: #555;
-        }
-        /* 命令类型颜色 */
-        .cmd-motion { color: #16a34a; /* green-600 */ }
-        .cmd-insert { color: #dc2626; /* red-600 */ }
-        .cmd-operator { color: #ea580c; /* orange-600 */ }
-        .cmd-extra { color: #7c3aed; /* purple-600 */ }
-        .cmd-normal { color: #2563eb; /* blue-600 */ }
-
-        .key-esc { background-color: #fef9c3; /* yellow-100 */ }
-        .key-yellow { background-color: #fef08a; /* yellow-300 */ }
-        
-        .legend-section {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .legend-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-            font-size: 0.9em;
-        }
-        .legend-color-box {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-            border-radius: 3px;
-        }
-    </style>
+    <title>Kakoune/Helix Cheat Sheet</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="p-4 md:p-8">
-    <h1 class="text-3xl font-bold text-center mb-8 text-slate-700">vi / vim 快捷键示意图</h1>
 
-    <div class="keyboard-container max-w-6xl mx-auto">
-        <div class="key-row">
-            <div class="key key-esc w-28"> <div class="key-char">Esc</div>
-                <div class="vim-cmd cmd-normal">normal mode</div>
-                <div class="vim-desc">(切换模式)</div>
-            </div>
-        </div>
+<body>
+    <div id="keyboard-container"></div>
 
-        <div class="key-row">
-            <div class="key"><div class="key-char">~</div><div class="vim-cmd">toggle case</div></div>
-            <div class="key"><div class="key-char">!</div><div class="vim-cmd cmd-operator">filter</div><div class="vim-desc">(外部命令)</div></div>
-            <div class="key"><div class="key-char">@</div><div class="vim-cmd cmd-extra">play macro</div></div>
-            <div class="key"><div class="key-char">#</div><div class="vim-cmd cmd-motion">prev ident</div></div>
-            <div class="key"><div class="key-char">$</div><div class="vim-cmd cmd-motion">eol / col 0</div></div>
-            <div class="key"><div class="key-char">%</div><div class="vim-cmd cmd-motion">match {} () []</div></div>
-            <div class="key"><div class="key-char">^</div><div class="vim-cmd cmd-motion">bol ("soft")</div></div>
-            <div class="key"><div class="key-char">&</div><div class="vim-cmd cmd-extra">repeat s/:</div></div>
-            <div class="key"><div class="key-char">*</div><div class="vim-cmd cmd-motion">next ident</div></div>
-            <div class="key"><div class="key-char">(</div><div class="vim-cmd cmd-motion">begin sentence</div></div>
-            <div class="key"><div class="key-char">)</div><div class="vim-cmd cmd-motion">end sentence</div></div>
-            <div class="key"><div class="key-char">_</div><div class="vim-cmd cmd-motion">"soft" bol N-1 lines</div></div>
-            <div class="key"><div class="key-char">+</div><div class="vim-cmd cmd-motion">next line bol</div></div>
-        </div>
+    <script>
+        function parseCSV(csv) {
+            const lines = csv.trim().split('\n').filter(line => line.trim() !== ''); // Filter empty lines
+            const headerLine = lines[0];
+            // Robustly split header, handling potential spaces around commas
+            const header = headerLine.split(',').map(h => h.trim());
 
-        <div class="key-row">
-            <div class="key"><div class="key-char">1</div><div class="vim-cmd cmd-extra">goto mark</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">2</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">3</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">4</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">5</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">6</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">7</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">8</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">9</div><div class="vim-desc">(计数)</div></div>
-            <div class="key"><div class="key-char">0</div><div class="vim-cmd cmd-motion">"hard" bol</div></div>
-            <div class="key"><div class="key-char">-</div><div class="vim-cmd cmd-motion">prev line bol</div></div>
-            <div class="key"><div class="key-char">=</div><div class="vim-cmd cmd-operator">auto format</div></div>
-        </div>
+            const data = lines.slice(1).map(line => {
+                // This simple split assumes commas are not within quoted fields.
+                // For this specific CSV, it should be fine.
+                const values = line.split(',');
+                const entry = {};
+                header.forEach((col, index) => {
+                    entry[col] = values[index] ? values[index].trim() : ''; // Handle missing values robustly
+                });
+                return entry;
+            });
+            return data;
+        }
 
-        <div class="key-row">
-            <div class="key"><div class="key-char">Q</div><div class="vim-cmd cmd-extra">ex mode</div></div>
-            <div class="key"><div class="key-char">W</div><div class="vim-cmd cmd-motion">next WORD</div></div>
-            <div class="key"><div class="key-char">E</div><div class="vim-cmd cmd-motion">end WORD</div></div>
-            <div class="key"><div class="key-char">R</div><div class="vim-cmd cmd-insert">Replace mode</div></div>
-            <div class="key"><div class="key-char">T</div><div class="vim-cmd cmd-motion">Till char (back)</div></div>
-            <div class="key key-yellow"><div class="key-char">Y</div><div class="vim-cmd cmd-operator">Yank line</div></div>
-            <div class="key key-yellow"><div class="key-char">U</div><div class="vim-cmd cmd-normal">Undo line</div></div>
-            <div class="key key-yellow"><div class="key-char">I</div><div class="vim-cmd cmd-insert">Insert</div><div class="vim-desc">(at cursor)</div></div>
-            <div class="key key-yellow"><div class="key-char">O</div><div class="vim-cmd cmd-insert">Open line above</div></div>
-            <div class="key key-yellow"><div class="key-char">P</div><div class="vim-cmd cmd-normal">Paste before</div></div>
-            <div class="key"><div class="key-char">[</div><div class="vim-cmd cmd-motion">begin parag.</div></div>
-            <div class="key"><div class="key-char">]</div><div class="vim-cmd cmd-motion">end parag.</div></div>
-        </div>
+        function isDark(hexColor) {
+            if (!hexColor || typeof hexColor !== 'string' || hexColor.length < 7 || hexColor[0] !== '#') {
+                return false; // Default to not dark if color is invalid
+            }
+            try {
+                const hex = hexColor.replace('#', '');
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+                return luma < 140; // Adjusted threshold for better aesthetics with given colors
+            } catch (e) {
+                console.warn("Error parsing color for brightness check:", hexColor, e);
+                return false; // Default if parsing fails
+            }
+        }
 
-        <div class="key-row">
-            <div class="key"><div class="key-char">A</div><div class="vim-cmd cmd-insert">Append</div><div class="vim-desc">(at eol)</div></div>
-            <div class="key"><div class="key-char">S</div><div class="vim-cmd cmd-insert">Substitute line</div></div>
-            <div class="key"><div class="key-char">D</div><div class="vim-cmd cmd-operator">Delete to eol</div></div>
-            <div class="key"><div class="key-char">F</div><div class="vim-cmd cmd-motion">Find char (back)</div></div>
-            <div class="key"><div class="key-char">G</div><div class="vim-cmd cmd-motion">goto eof / line</div></div>
-            <div class="key"><div class="key-char">H</div><div class="vim-cmd cmd-motion">screen Top</div></div>
-            <div class="key"><div class="key-char">J</div><div class="vim-cmd cmd-normal">Join line</div></div>
-            <div class="key"><div class="key-char">K</div><div class="vim-cmd cmd-extra">Help (keyword)</div></div>
-            <div class="key"><div class="key-char">L</div><div class="vim-cmd cmd-motion">screen Bottom</div></div>
-            <div class="key"><div class="key-char">;</div><div class="vim-cmd cmd-extra">repeat f/F/t/T</div></div>
-            <div class="key"><div class="key-char">'</div><div class="vim-cmd cmd-motion">goto mark bol</div><div class="vim-desc">(reg. "x)</div></div>
-        </div>
+        function renderKeyboard(keysData) {
+            const keyboardContainer = document.getElementById('keyboard-container');
+            if (!keyboardContainer) {
+                console.error("Keyboard container not found!");
+                return;
+            }
 
-        <div class="key-row">
-            <div class="key"><div class="key-char">Z</div><div class="vim-cmd cmd-extra">Z Z (save & quit)</div><div class="vim-desc">ZQ (quit no save)</div></div>
-            <div class="key"><div class="key-char">X</div><div class="vim-cmd cmd-normal">Delete char (back)</div></div>
-            <div class="key"><div class="key-char">C</div><div class="vim-cmd cmd-operator">Change to eol</div></div>
-            <div class="key"><div class="key-char">V</div><div class="vim-cmd cmd-extra">Visual mode</div><div class="vim-desc">(lines)</div></div>
-            <div class="key"><div class="key-char">B</div><div class="vim-cmd cmd-motion">prev WORD</div></div>
-            <div class="key"><div class="key-char">N</div><div class="vim-cmd cmd-motion">next find (rev.)</div></div>
-            <div class="key"><div class="key-char">M</div><div class="vim-cmd cmd-motion">screen Middle</div></div>
-            <div class="key"><div class="key-char">,</div><div class="vim-cmd cmd-extra">repeat f/F/t/T (rev)</div></div>
-            <div class="key"><div class="key-char">.</div><div class="vim-cmd cmd-extra">repeat last cmd</div></div>
-            <div class="key"><div class="key-char">/</div><div class="vim-cmd cmd-extra">Find</div></div>
-            <div class="key"><div class="key-char">?</div><div class="vim-cmd cmd-extra">Find (rev.)</div></div>
-        </div>
-        
-        <div class="key-row">
-            <div class="key w-auto px-2"><div class="key-char">v</div><div class="vim-cmd cmd-extra">visual char</div></div>
-            <div class="key w-auto px-2"><div class="key-char">Ctrl-V</div><div class="vim-cmd cmd-extra">visual block</div></div>
-            <div class="key"><div class="key-char">h</div><div class="vim-cmd cmd-motion">◄ left</div></div>
-            <div class="key"><div class="key-char">j</div><div class="vim-cmd cmd-motion">▼ down</div></div>
-            <div class="key"><div class="key-char">k</div><div class="vim-cmd cmd-motion">▲ up</div></div>
-            <div class="key"><div class="key-char">l</div><div class="vim-cmd cmd-motion">► right</div></div>
-            <div class="key w-auto px-2"><div class="key-char">w</div><div class="vim-cmd cmd-motion">next word</div></div>
-            <div class="key w-auto px-2"><div class="key-char">b</div><div class="vim-cmd cmd-motion">prev word</div></div>
-            <div class="key w-auto px-2"><div class="key-char">e</div><div class="vim-cmd cmd-motion">end word</div></div>
-        </div>
-    </div>
+            const rowLengths = [12, 10, 10, 6];
+            const rows = [];
+            let currentIndex = 0;
 
-    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-        <div class="legend-section">
-            <div class="legend-title">命令类型图例:</div>
-            <div class="legend-item">
-                <div class="legend-color-box bg-green-500"></div> <span class="cmd-motion font-semibold">Motion (移动)</span>: 移动光标，或定义操作范围。
-            </div>
-            <div class="legend-item">
-                <div class="legend-color-box bg-blue-500"></div> <span class="cmd-normal font-semibold">Command (命令)</span>: 直接执行动作。
-            </div>
-             <div class="legend-item">
-                <div class="legend-color-box bg-red-500"></div> <span class="cmd-insert font-semibold">Insert Mode Command (进入插入模式)</span>: 红色表示进入插入模式。
-            </div>
-            <div class="legend-item">
-                <div class="legend-color-box bg-orange-500"></div> <span class="cmd-operator font-semibold">Operator (操作符)</span>: 需要配合一个移动命令，在光标和目标之间操作。
-            </div>
-            <div class="legend-item">
-                <div class="legend-color-box bg-purple-500"></div> <span class="cmd-extra font-semibold">Extra (特殊)</span>: 特殊功能，通常需要额外输入。
-            </div>
-        </div>
+            for (const len of rowLengths) {
+                if (currentIndex >= keysData.length) break;
+                rows.push(keysData.slice(currentIndex, currentIndex + len));
+                currentIndex += len;
+            }
 
-        <div class="legend-section">
-            <div class="legend-title">重要提示:</div>
-            <ul class="list-disc list-inside text-sm space-y-1">
-                <li><code>:w</code> 保存, <code>:q</code> 退出, <code>:q!</code> 不保存退出, <code>:wq</code> 保存并退出。</li>
-                <li><code>:e 文件名</code> 打开文件。</li>
-                <li><code>:%s/旧/新/g</code> 全局替换。</li>
-                <li><code>:h</code> 获取帮助。</li>
-                <li><code>数字 + 命令</code>: 重复命令N次 (例如: <code>2p</code>, <code>d2w</code>, <code>5j</code>)。</li>
-                <li><code>dd</code> 删除行, <code>yy</code> 复制行, <code>cc</code> 修改行。</li>
-                <li><code>gg</code> 文件头, <code>G</code> 文件尾。</li>
-                <li><code>u</code> 撤销, <code>Ctrl-R</code> 重做。</li>
-                <li><code>zt</code> 光标行至屏幕顶, <code>zb</code> 底, <code>zz</code> 中。</li>
-            </ul>
-        </div>
-    </div>
+            const keyWidth = '7.5vw'; // best viewport width: 1666px
+            const keyHeight = '7.7vw';
 
-    <footer class="text-center text-sm text-gray-500 mt-12 pb-8">
-        For an key-press-interactive cheat sheet, go to ... 
-    </footer>
+            rows.forEach((rowKeys, rowIndex) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.classList.add('keyboard-row');
+                rowDiv.style.marginLeft = `calc(${rowIndex * 0.25} * ${keyWidth})`;
 
+                rowKeys.forEach(keyInfo => {
+                    const keyDiv = document.createElement('div');
+                    keyDiv.classList.add('key');
+                    keyDiv.style.width = keyWidth;
+                    keyDiv.style.height = keyHeight;
+
+                    // Upper Half
+                    const upperHalf = document.createElement('div');
+                    upperHalf.classList.add('key-half', 'upper-half');
+                    const upperColor = keyInfo['upper color'] || 'transparent';
+                    upperHalf.style.backgroundColor = upperColor;
+                    if (isDark(upperColor)) {
+                        upperHalf.classList.add('text-light-container');
+                    }
+
+                    const mainCharUpper = document.createElement('span');
+                    mainCharUpper.classList.add('main-char-upper');
+                    mainCharUpper.textContent = keyInfo.key;
+                    upperHalf.appendChild(mainCharUpper);
+
+                    const shiftActionText = document.createElement('span');
+                    shiftActionText.classList.add('action-text-upper');
+                    shiftActionText.textContent = keyInfo['shift action'];
+                    upperHalf.appendChild(shiftActionText);
+                    keyDiv.appendChild(upperHalf);
+
+                    // Lower Half
+                    const lowerHalf = document.createElement('div');
+                    lowerHalf.classList.add('key-half', 'lower-half');
+                    const lowerColor = keyInfo['lower color'] || 'transparent';
+                    lowerHalf.style.backgroundColor = lowerColor;
+                    if (isDark(lowerColor)) {
+                        lowerHalf.classList.add('text-light-container');
+                    }
+
+                    const actionText = document.createElement('span');
+                    actionText.classList.add('action-text-lower');
+                    actionText.textContent = keyInfo.action;
+                    lowerHalf.appendChild(actionText);
+
+                    const mainCharLower = document.createElement('span');
+                    mainCharLower.classList.add('main-char-lower');
+                    mainCharLower.textContent = keyInfo['lowercase key'];
+                    lowerHalf.appendChild(mainCharLower);
+                    keyDiv.appendChild(lowerHalf);
+
+                    rowDiv.appendChild(keyDiv);
+                });
+                keyboardContainer.appendChild(rowDiv);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('keys.csv').then(response => response.text()).then(csvData => {
+                try {
+                    const parsedKeys = parseCSV(csvData);
+                    renderKeyboard(parsedKeys);
+                } catch (error) {
+                    console.error("Failed to initialize cheat sheet:", error);
+                    const container = document.getElementById('keyboard-container') || document.body;
+                    container.innerHTML = "<p style='color:red;'>Error loading cheat sheet. See console for details.</p>";
+                }
+            })
+                .catch(error => {
+                    console.error('Error fetching the CSV file:', error);
+                    const container = document.getElementById('keyboard-container') || document.body;
+                    container.innerHTML = "<p style='color:red;'>Error fetching cheat sheet data. See console for details.</p>";
+                });
+        });
+    </script>
 </body>
+
 </html>

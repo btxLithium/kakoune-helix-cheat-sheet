@@ -1,0 +1,42 @@
+key,upper color,shift action,lowercase key,lower color,action
+!, #C9C8C3,insert on new line below,1,#C9C8C3,,
+@, #C9C8C3,insert on new line above,2,#C9C8C3,,
+#, #C9C8C3,insert on new line above,3,#C9C8C3,,
+$, #C9C8C3,insert on new line below,4,#C9C8C3,,
+%, #C9C8C3,insert on new line below,5,#C9C8C3,,
+^, #C9C8C3,insert on new line below,6,#C9C8C3,,
+&, #C9C8C3,insert on new line below,7,#C9C8C3,,
+*, #C9C8C3,insert on new line below,8,#C9C8C3,,
+(, #C9C8C3,insert on new line below,9,#C9C8C3,,
+), #C9C8C3,insert on new line below,0,#C9C8C3,,
+_, #C9C8C3,insert on new line below,-,#C9C8C3,,
+=, #C9C8C3,insert on new line below,+,#D0555F,,
+
+
+Q,#D0555F,start or end macro recording,q,#D0555F,replay recorded macro
+W,#0047A0,extend to next word end,w,#0047A0,select to next word end
+E,#0047A0,extend to next word end,e,#0047A0,select to next word end
+R,#D0555F,replace selected text with paired yanked text,r,#D0555F,replace with character
+T,#0047A0,extend to next character,t,#0047A0,select to next character 
+Y,#D0555F,,y,#D0555F,yank selected text
+U,#D0555F,redo,u,#D0555F,undo
+I,#D0555F,insert at line begin,i,#D0555F,insert before selected text
+O,#D0555F,insert on new line above,o,#D0555F,insert on new line below
+P,#D0555F,paste before selected text,p,#D0555F,paste after selected text
+
+A,#D0555F,insert at line end,a,#D0555F,insert after selected text
+S,#D0555F,split selected text on regex matches,s,#0047A0,select regex matches in selected text
+D,#C9C8C3,,d,#D0555F,erase selected text
+F,#0047A0,extend to next character included,f,#0047A0,select to next character included 
+G,#0047A0,extend to location,g,#0047A0,go to location 
+H,#0047A0,extend left,h,#0047A0,move left 
+J,#0047A0,extend down,j,#0047A0,move down 
+K,#0047A0,extend up,k,#0047A0,move up 
+L,#0047A0,extend right,l,#0047A0,move right 
+
+Z,#C9C8C3,save selections,z,#C9C8C3,restore selections
+X,#C9C8C3,,x,#D0555F,expand selections to contain full lines
+C,#0047A0,copy selection on next lines,c,#D0555F,change selected text
+V,#0047A0,extend to next word start,v,#0047A0,select to next word start 
+B,#0047A0,extend to previous word start,b,#0047A0,select to previous word start
+N,#0047A0,extend with next current search pattern match,n,#0047A0,select next current search pattern match

@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #ffffff;
+    /* Darker background for better contrast with keyboard */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Align to top for better viewing if content is tall */
+    min-height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    color: #000000;
+}
+
+#keyboard-container {
+    margin-top: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    /* Gap between rows */
+    padding: 11px;
+    background-color: #ffffff;
+    /* Dark base for the keyboard */
+    border: 3.5px solid #000000;
+    border-radius: 15px;
+}
+
+.keyboard-row {
+    display: flex;
+    gap: 6px;
+    /* Gap between keys */
+    width: 91vw;
+    height: auto;
+}
+
+.key {
+    border: 1px solid #3C3C3C;
+    border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0px rgba(255, 255, 255, 0.05);
+    color: #000000;
+    /* Default text color for keys (black) */
+}
+
+.key-half {
+    height: 50%;
+    position: relative;
+    /* For positioning text within the half */
+    padding: 3px;
+    box-sizing: border-box;
+    display: flex;
+    /* Helps with text alignment if not using all absolute */
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.upper-half {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    /* Separator line */
+}
+
+.key-half span {
+    /* Common style for all text inside key halves */
+    position: absolute;
+    line-height: 1.15;
+    word-break: break-word;
+    /* More aggressive word breaking */
+    overflow-wrap: break-word;
+    /* Standard property */
+    hyphens: auto;
+    /* Allow hyphenation if supported */
+}
+
+.main-char-upper {
+    /* e.g., '!', 'A' */
+    top: 2px;
+    left: 4px;
+    font-family: "Merriweather Sans", sans-serif;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.action-text-upper {
+    /* shift action */
+    top: 2px;
+    right: 4px;
+    font-size: 22px;
+    text-align: right;
+    max-width: calc(100% - 20px);
+    /* Max width considering padding and main char space */
+}
+
+.action-text-lower {
+    /* action */
+    bottom: 2px;
+    left: 4px;
+    font-size: 16px;
+    text-align: left;
+    max-width: calc(100% - 20px);
+    /* Max width considering padding and main char space */
+}
+
+.main-char-lower {
+    font-family: "Merriweather Sans", sans-serif;
+    bottom: 2px;
+    right: 4px;
+    font-size: 26px;
+}
+
+/* Text color modifier for dark backgrounds */
+.key-half.text-light-container span {
+    color: white;
+}
