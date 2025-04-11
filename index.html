@@ -9,140 +9,189 @@
 </head>
 
 <body>
-    <div id="keyboard-container"></div>
+    <div class="cheat-sheet">
+        <div id="keyboard-container">
+        </div>
+        <div class="explanation-container">
+            <div class="column"></div>
+            <div class="column">
+                Notes: <br>
+                <table>
+                    <tr>
+                        <td><span class="list-number"> (1)</span></td>
+                        <td>type in a number before any action to repeat it that number of
+                            times</td>
+                    </tr>
+                    <tr>
+                        <td><span class="list-number"> (2)</span></td>
+                        <td>12 ;+ <kbd>Esc</kbd> 可以打开任务管理器。</td>
+                    </tr>
 
-    <script>
-        function parseCSV(csv) {
-            const lines = csv.trim().split('\n').filter(line => line.trim() !== ''); // Filter empty lines
-            const headerLine = lines[0];
-            // Robustly split header, handling potential spaces around commas
-            const header = headerLine.split(',').map(h => h.trim());
+                    <tr>
+                        <td><span class="list-number"> (3)</span></td>
+                        <td><kbd>g</kbd> <kbd>k</kbd>: buffer top; <kbd>g</kbd> <kbd>j</kbd>: buffer bottom;
+                            <br><kbd>g</kbd>
+                            <kbd>h</kbd>: line begin; <kbd>g</kbd> <kbd>l</kbd>:line end<br>
+                            <kbd>g</kbd> <kbd>i</kbd>: line begin(non blank);
+                        </td>
+                    </tr>
 
-            const data = lines.slice(1).map(line => {
-                // This simple split assumes commas are not within quoted fields.
-                // For this specific CSV, it should be fine.
-                const values = line.split(',');
-                const entry = {};
-                header.forEach((col, index) => {
-                    entry[col] = values[index] ? values[index].trim() : ''; // Handle missing values robustly
-                });
-                return entry;
+                    <tr>
+                        <td><span class="list-number"> (4)</span></td>
+                        <td>
+                            How to select multiple lines: Keep pressing <kbd>J</kbd> or <kbd>K</kbd> to expand selection
+                            into the lines you prefer to select, then press <kbd>x</kbd> to select the full lines (or
+                            press <kbd>Alt</kbd>+<kbd>x</kbd> to trim).
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="column" style="color: #dcdcdc; font-size: 16px; font-weight: normal;">
+                <span style="font-weight: bold; font-size: 18px;">Kakoune Philosophy:</span> <br>
+                Kakoune’s keymapping centers interactivity and feedback through its "selection first, action second"
+                model. This core tenet ensures users always see what will be affected before committing to an
+                action.<br><br>In contrast to Vim's command-object pattern (e.g., pressing <kbd>c</kbd><kbd>w</kbd> to
+                change a word), Kakoune
+                follows a different model: first press <kbd>w</kbd> to highlight the word, then press <kbd>c</kbd> to
+                change it.
+                <br><br>This design prioritizes constant visual feedback (selections are always visible) and intuitive
+                command composition, which reduce cognitive load while retaining flexibility.
+            </div>
+        </div>
+    </div>
+    <div style=" margin-left: auto; margin-right: 2.2vw; font-family: Courier Prime, monospace; text-align: right; font-weight: 100; font-size: 17px;">
+        github.com/btxLithium/kakoune-helix-cheat-sheet <br><span style="font-style: italic;">version 1.0 May 15th,
+            2025</span></div>
+</body>
+
+
+
+<script>
+    function parseCSV(csv) {
+        const lines = csv.trim().split('\n').filter(line => line.trim() !== ''); // Filter empty lines
+        const headerLine = lines[0];
+        // Robustly split header, handling potential spaces around commas
+        const header = headerLine.split(',').map(h => h.trim());
+
+        const data = lines.slice(1).map(line => {
+            // This simple split assumes commas are not within quoted fields.
+            // For this specific CSV, it should be fine.
+            const values = line.split(',');
+            const entry = {};
+            header.forEach((col, index) => {
+                entry[col] = values[index] ? values[index].trim() : ''; // Handle missing values robustly
             });
-            return data;
-        }
-
-        function isDark(hexColor) {
-            if (!hexColor || typeof hexColor !== 'string' || hexColor.length < 7 || hexColor[0] !== '#') {
-                return false; // Default to not dark if color is invalid
-            }
-            try {
-                const hex = hexColor.replace('#', '');
-                const r = parseInt(hex.substring(0, 2), 16);
-                const g = parseInt(hex.substring(2, 4), 16);
-                const b = parseInt(hex.substring(4, 6), 16);
-                const luma = 0.299 * r + 0.587 * g + 0.114 * b;
-                return luma < 140; // Adjusted threshold for better aesthetics with given colors
-            } catch (e) {
-                console.warn("Error parsing color for brightness check:", hexColor, e);
-                return false; // Default if parsing fails
-            }
-        }
-
-        function renderKeyboard(keysData) {
-            const keyboardContainer = document.getElementById('keyboard-container');
-            if (!keyboardContainer) {
-                console.error("Keyboard container not found!");
-                return;
-            }
-
-            const rowLengths = [12, 10, 10, 6];
-            const rows = [];
-            let currentIndex = 0;
-
-            for (const len of rowLengths) {
-                if (currentIndex >= keysData.length) break;
-                rows.push(keysData.slice(currentIndex, currentIndex + len));
-                currentIndex += len;
-            }
-
-            const keyWidth = '7.5vw'; // best viewport width: 1666px
-            const keyHeight = '7.7vw';
-
-            rows.forEach((rowKeys, rowIndex) => {
-                const rowDiv = document.createElement('div');
-                rowDiv.classList.add('keyboard-row');
-                rowDiv.style.marginLeft = `calc(${rowIndex * 0.25} * ${keyWidth})`;
-
-                rowKeys.forEach(keyInfo => {
-                    const keyDiv = document.createElement('div');
-                    keyDiv.classList.add('key');
-                    keyDiv.style.width = keyWidth;
-                    keyDiv.style.height = keyHeight;
-
-                    // Upper Half
-                    const upperHalf = document.createElement('div');
-                    upperHalf.classList.add('key-half', 'upper-half');
-                    const upperColor = keyInfo['upper color'] || 'transparent';
-                    upperHalf.style.backgroundColor = upperColor;
-                    if (isDark(upperColor)) {
-                        upperHalf.classList.add('text-light-container');
-                    }
-
-                    const mainCharUpper = document.createElement('span');
-                    mainCharUpper.classList.add('main-char-upper');
-                    mainCharUpper.textContent = keyInfo.key;
-                    upperHalf.appendChild(mainCharUpper);
-
-                    const shiftActionText = document.createElement('span');
-                    shiftActionText.classList.add('action-text-upper');
-                    shiftActionText.textContent = keyInfo['shift action'];
-                    upperHalf.appendChild(shiftActionText);
-                    keyDiv.appendChild(upperHalf);
-
-                    // Lower Half
-                    const lowerHalf = document.createElement('div');
-                    lowerHalf.classList.add('key-half', 'lower-half');
-                    const lowerColor = keyInfo['lower color'] || 'transparent';
-                    lowerHalf.style.backgroundColor = lowerColor;
-                    if (isDark(lowerColor)) {
-                        lowerHalf.classList.add('text-light-container');
-                    }
-
-                    const actionText = document.createElement('span');
-                    actionText.classList.add('action-text-lower');
-                    actionText.textContent = keyInfo.action;
-                    lowerHalf.appendChild(actionText);
-
-                    const mainCharLower = document.createElement('span');
-                    mainCharLower.classList.add('main-char-lower');
-                    mainCharLower.textContent = keyInfo['lowercase key'];
-                    lowerHalf.appendChild(mainCharLower);
-                    keyDiv.appendChild(lowerHalf);
-
-                    rowDiv.appendChild(keyDiv);
-                });
-                keyboardContainer.appendChild(rowDiv);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('keys.csv').then(response => response.text()).then(csvData => {
-                try {
-                    const parsedKeys = parseCSV(csvData);
-                    renderKeyboard(parsedKeys);
-                } catch (error) {
-                    console.error("Failed to initialize cheat sheet:", error);
-                    const container = document.getElementById('keyboard-container') || document.body;
-                    container.innerHTML = "<p style='color:red;'>Error loading cheat sheet. See console for details.</p>";
-                }
-            })
-                .catch(error => {
-                    console.error('Error fetching the CSV file:', error);
-                    const container = document.getElementById('keyboard-container') || document.body;
-                    container.innerHTML = "<p style='color:red;'>Error fetching cheat sheet data. See console for details.</p>";
-                });
+            return entry;
         });
-    </script>
+        return data;
+    }
+
+    function isDarkBg(hexColor) {
+        if (!hexColor || typeof hexColor !== 'string' || hexColor.length < 7) {
+            return false; // Default to not dark if the background color is invalid.
+        }
+        if (hexColor == '#0047A0') {
+            return true;
+        }
+        return false;
+    }
+
+    function renderKeyboard(keysData) {
+        const keyboardContainer = document.getElementById('keyboard-container');
+        if (!keyboardContainer) {
+            console.error("Keyboard container not found!");
+            return;
+        }
+
+        const rowLengths = [12, 12, 11, 10];
+        const rows = [];
+        let currentIndex = 0;
+
+        for (const len of rowLengths) {
+            if (currentIndex >= keysData.length) break;
+            rows.push(keysData.slice(currentIndex, currentIndex + len));
+            currentIndex += len;
+        }
+
+        const keyWidth = '7vw'; // best viewport width: 1666px
+        const keyHeight = '7.3vw';
+
+        rows.forEach((rowKeys, rowIndex) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.classList.add('keyboard-row');
+            rowDiv.style.marginLeft = `calc(${rowIndex * 0.25} * ${keyWidth})`;
+
+            rowKeys.forEach(keyInfo => {
+                const keyDiv = document.createElement('div');
+                keyDiv.classList.add('key');
+                keyDiv.style.width = keyWidth;
+                keyDiv.style.height = keyHeight;
+
+                // Upper Half
+                const upperHalf = document.createElement('div');
+                upperHalf.classList.add('key-half', 'upper-half');
+                const upperColor = keyInfo['upper color'] || 'transparent';
+                upperHalf.style.backgroundColor = upperColor;
+                if (isDarkBg(upperColor)) {
+                    upperHalf.classList.add('text-light-container');
+                }
+
+                const mainCharUpper = document.createElement('span');
+                mainCharUpper.classList.add('main-char-upper');
+                mainCharUpper.textContent = keyInfo.key;
+                upperHalf.appendChild(mainCharUpper);
+
+                const shiftActionText = document.createElement('span');
+                shiftActionText.classList.add('action-text-upper');
+                shiftActionText.textContent = keyInfo['shift action'];
+                upperHalf.appendChild(shiftActionText);
+                keyDiv.appendChild(upperHalf);
+
+                // Lower Half
+                const lowerHalf = document.createElement('div');
+                lowerHalf.classList.add('key-half', 'lower-half');
+                const lowerColor = keyInfo['lower color'] || 'transparent';
+                lowerHalf.style.backgroundColor = lowerColor;
+                if (isDarkBg(lowerColor)) {
+                    lowerHalf.classList.add('text-light-container');
+                }
+
+                const actionText = document.createElement('span');
+                actionText.classList.add('action-text-lower');
+                actionText.textContent = keyInfo.action;
+                lowerHalf.appendChild(actionText);
+
+                const mainCharLower = document.createElement('span');
+                mainCharLower.classList.add('main-char-lower');
+                mainCharLower.textContent = keyInfo['lowercase key'];
+                lowerHalf.appendChild(mainCharLower);
+                keyDiv.appendChild(lowerHalf);
+
+                rowDiv.appendChild(keyDiv);
+            });
+            keyboardContainer.appendChild(rowDiv);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('keys.csv').then(response => response.text()).then(csvData => {
+            try {
+                const parsedKeys = parseCSV(csvData);
+                renderKeyboard(parsedKeys);
+            } catch (error) {
+                console.error("Failed to initialize cheat sheet:", error);
+                const container = document.getElementById('keyboard-container') || document.body;
+                container.innerHTML = "<p style='color:red;'>Error loading cheat sheet. See console for details.</p>";
+            }
+        })
+            .catch(error => {
+                console.error('Error fetching the CSV file:', error);
+                const container = document.getElementById('keyboard-container') || document.body;
+                container.innerHTML = "<p style='color:red;'>Error fetching cheat sheet data. See console for details.</p>";
+            });
+    });
+</script>
 </body>
 
 </html>
