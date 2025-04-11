@@ -1,50 +1,46 @@
-key,upper color,shift action,lowercase key,lower color,action
-!, #C9C8C3,insert on new line below,1,#C9C8C3,,
-@, #C9C8C3,insert on new line above,2,#C9C8C3,,
-#, #C9C8C3,insert on new line above,3,#C9C8C3,,
-$, #C9C8C3,insert on new line below,4,#C9C8C3,,
-%, #C9C8C3,insert on new line below,5,#C9C8C3,,
-^, #C9C8C3,insert on new line below,6,#C9C8C3,,
-&, #C9C8C3,insert on new line below,7,#C9C8C3,,
-*, #C9C8C3,insert on new line below,8,#C9C8C3,,
-(, #C9C8C3,insert on new line below,9,#C9C8C3,,
-), #C9C8C3,insert on new line below,0,#C9C8C3,,
-_, #C9C8C3,insert on new line below,-,#C9C8C3,,
-=, #C9C8C3,insert on new line below,+,#E06C76,,
-
-
-Q,#E06C76,start or end macro recording,q, #e06c76,replay recorded macro
-W,#0047A0,extend to next word end,w,#0047A0,select to next word end
-E,#0047A0,extend to next word end,e,#0047A0,select to next word end
-R,#E06C76,replace selected text with paired yanked text,r,#E06C76,replace with character
-T,#0047A0,extend to next character,t,#0047A0,select to next character 
-Y,#E06C76,,y,#E06C76,yank selected text
-U,#E06C76,redo,u,#E06C76,undo
-I,#E06C76,insert at line begin,i,#E06C76,insert before selected text
-O,#E06C76,insert on new line above,o,#E06C76,insert on new line below
-P,#E06C76,paste before selected text,p,#E06C76,paste after selected text
-{,#0047A0,extend to end of line,[,#0047A0,select to end of line
-},#0047A0,extend to previous character,],#0047A0,select to previous character
-
-A,#E06C76,insert at line end,a,#E06C76,insert after selected text
-S,#E06C76,split selected text on regex matches,s,#0047A0,select regex matches in selected text
-D,#C9C8C3,,d,#E06C76,erase selected text
-F,#0047A0,extend to next character included,f,#0047A0,select to next character included 
-G,#0047A0,extend to location,g,#0047A0,go to location 
-H,#0047A0,extend left,h,#0047A0,move left 
-J,#0047A0,extend down,j,#0047A0,move down 
-K,#0047A0,extend up,k,#0047A0,move up 
-L,#0047A0,extend right,l,#0047A0,move right 
-:,#0047A0,extend to end of line,;,#0047A0,select to end of line
-",#0047A0,extend to next word start,',#0047A0,select to next word start
-
-Z,#C9C8C3,save selections,z,#C9C8C3,restore selections
-X,#C9C8C3,,x,#E06C76,expand selections to contain full lines
-C,#0047A0,copy selection on next lines,c,#E06C76,change selected text
-V,#0047A0,extend to next word start,v,#0047A0,select to next word start 
-B,#0047A0,extend to previous word start,b,#0047A0,select to previous word start
-N,#0047A0,extend with next current search pattern match,n,#0047A0,select next current search pattern match
-M,#0047A0,extend to previous word start,m,#0047A0,select to previous word start
-<,#E06C76,repeat last action,，,#E06C76,repeat last action
->,#E06C76,repeat last action,.,#E06C76,repeat last action
-?,#0047A0,extend to next current search pattern match,/,#0047A0,select next current search pattern match
+key,upper color,shift action,lowercase key,lower color,action,
+!, #C9C8C3,insert output,1,#C9C8C3,,
+@, #C9C8C3,tabs to spaces,2,#C9C8C3,,
+#, #7a7972, ,3,#C9C8C3,,,,,,,,
+$, #C9C8C3,pipe selected,4,#C9C8C3,,
+%, #C9C8C3,select buffer,5,#C9C8C3,,
+^,#7a7972,,6,#C9C8C3,,
+&, #C9C8C3,align cursors,7,#C9C8C3,,
+*, #C9C8C3,set pattern ,8,#C9C8C3,,
+(, #C9C8C3,rotate backward,9,#C9C8C3,,
+), #C9C8C3,rotate forward,0,#7a7972,,
+_, #C9C8C3,trim selection,-,#7a7972,,
+=, #7a7972,,+, #C9C8C3,duplicate selection,
+Q,#E06C76, record macro,q,#E06C76,replay macro,
+W,#0047A0,word start,w,#c2ddff,word start,
+E,#0047A0,word end,e,#c2ddff,word end,
+R,#E06C76,replace with yanked,r,#E06C76,replace with char,
+T,#0047A0,extend 'till char,t,#c2ddff,select 'till char,
+Y,#7a7972,,y,#E06C76,yank,
+U,#E06C76,redo,u,#E06C76,undo,
+I,#E06C76,insert at line begin,i,#E06C76,insert before,
+O,#E06C76,new line above,o,#E06C76,new line below,
+P,#E06C76,paste before,p,#E06C76,paste after,
+{,#0047A0,extend to obj start,[,#0047A0,select to obj start,
+},#0047A0,extend to obj end,],#0047A0,select to obj end,
+A,#E06C76,insert at line end,a,#E06C76,insert after selected text,
+S,#E06C76,split selected text on regex matches,s,#0047A0,select regex matches in selected text,
+D,#7a7972,,d,#E06C76,erase selected text,
+F,#0047A0,extend to next character included,f,#0047A0,select to next character included ,
+G,#0047A0,extend to location,g,#0047A0,go to location ,
+H,#0047A0,extend left,h,#6085b3,,
+J,#0047A0,extend down,j,#6085b3,,
+K,#0047A0,extend above,k,#6085b3,,
+L,#0047A0,extend right,l,#6085b3,,
+:,#0047A0,extend to end of line,;,#0047A0,select to end of line,
+双引,#0047A0,extend to next word start,',#7a7972, ,
+Z,#C9C8C3,save selections,z,#C9C8C3,restore selections,
+X,#7a7972,,x,#E06C76,expand selections to contain full lines,
+C,#0047A0,copy selection on next lines,c,#E06C76,change selected text,
+V,#0047A0,extend to next word start,v,#0047A0,select to next word start ,
+B,#0047A0,extend to previous word start,b,#0047A0,select to previous word start,
+N,#0047A0,extend with next current search pattern match,n,#0047A0,select next current search pattern match,
+M,#0047A0,extend to previous word start,m,#0047A0,select to previous word start,
+<,#E06C76,repeat last action,，,#E06C76,repeat last action,
+>,#E06C76,repeat last action,.,#E06C76,repeat last action,
+?,#0047A0,extend to next current search pattern match,/,#0047A0,select next current search pattern match,

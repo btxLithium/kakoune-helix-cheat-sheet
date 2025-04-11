@@ -76,13 +76,13 @@ body {
 .key-half span {
     /* Common style for all text inside key halves */
     position: absolute;
-    line-height: 1.15;
+    line-height: 1.05;
     word-break: break-word;
     /* More aggressive word breaking */
     overflow-wrap: break-word;
     /* Standard property */
-    hyphens: auto;
-    /* Allow hyphenation if supported */
+    hyphens: none;
+    /* Disable hyphenation explicitly */
 }
 
 .main-char-upper {
@@ -98,9 +98,9 @@ body {
     /* shift action */
     top: 2px;
     right: 4px;
-    font-size: 22px;
+    font-size: 18px;
     text-align: right;
-    max-width: calc(100% - 20px);
+    max-width: calc(100% - 30px);
     /* Max width considering padding and main char space */
 }
 
@@ -108,9 +108,9 @@ body {
     /* action */
     bottom: 2px;
     left: 4px;
-    font-size: 16px;
+    font-size: 20px;
     text-align: left;
-    max-width: calc(100% - 20px);
+    max-width: calc(100% - 27px);
     /* Max width considering padding and main char space */
 }
 
@@ -118,7 +118,8 @@ body {
     font-family: "Merriweather Sans", sans-serif;
     bottom: 2px;
     right: 4px;
-    font-size: 26px;
+    font-size: 27px;
+    font-weight: bold;
 }
 
 /* Text color modifier for dark backgrounds */
